@@ -18,9 +18,7 @@ struct TreeView: View {
     @Query private var goals: [Goal]
     
     private func getImageTree(goal: Goal) -> some View {
-        
         let consecutiveDays = findConsecutiveDays(entries: goal.entries)
-        
         let growthMultiplier: Double = consecutiveDays >= 3 ? 1.5 : 1.0
         
         switch goal.progress * growthMultiplier {
@@ -74,6 +72,17 @@ struct TreeView: View {
         return consecutiveDays
     }
     
+    private func shareAction() {
+        let activityItems: [Any] = ["Check out my tree growth!"]
+        
+        let buttonRect = CGRect(x: UIScreen.main.bounds.width - 40, y: UIScreen.main.bounds.height - 40, width: 1, height: 1)
+        guard let sourceView = UIApplication.shared.windows.first?.rootViewController?.view else { return }
+        let shareSheet = UIActivityViewController(activityItems: activityItems, applicationActivities: nil)
+        shareSheet.popoverPresentationController?.sourceView = sourceView
+        shareSheet.popoverPresentationController?.sourceRect = buttonRect
+        UIApplication.shared.windows.first?.rootViewController?.present(shareSheet, animated: true, completion: nil)
+    }
+    
     var body: some View {
         VStack {
             if !goals.isEmpty {
@@ -86,13 +95,12 @@ struct TreeView: View {
                     ForEach(goals) { goal in
                         VStack {
                             ZStack {
-
                                 getImageTree(goal: goal)
                                     .id("\(Date())")
                                 
                                 let consecutiveDays = findConsecutiveDays(entries: goal.entries)
                                 
-                                if(consecutiveDays >= 3){
+                                if consecutiveDays >= 3 {
                                     ZStack() {
                                         RoundedRectangle(cornerRadius: 20)
                                             .fill(Color.yellow)
@@ -119,9 +127,9 @@ struct TreeView: View {
                                 .offset(x: 55, y: -30)
                             }
                             .overlay(
-                               RoundedRectangle(cornerRadius: 20)
-                                .size(width: 150, height: 150)
-                                .stroke(Color.gray, lineWidth: 1)
+                                RoundedRectangle(cornerRadius: 20)
+                                    .size(width: 150, height: 150)
+                                    .stroke(Color.gray, lineWidth: 1)
                             )
                             .frame(width: 150, height: 150)
                             .padding(.bottom, 20)
@@ -139,6 +147,36 @@ struct TreeView: View {
                     }
                 }
                 .padding()
+                
+                if goals.count >= 6 {
+                    Button(action: {
+                        showMaxAlert.toggle()
+                    }) {
+                        Text("Add Tree")
+                            .font(.headline)
+                            .padding()
+                            .foregroundColor(.green)
+                            .cornerRadius(10)
+                    }
+                    .padding(.bottom, 10)
+                    .alert(isPresented: $showMaxAlert) {
+                        Alert(title: Text("Uh oh!"), message: Text("You're out of trees. Delete one to be able to add another."), dismissButton: .default(Text("OK")))
+                    }
+                } else {
+                    Button(action: {
+                        showTreeForm.toggle()
+                    }) {
+                        Text("Add Tree")
+                            .font(.headline)
+                            .padding()
+                            .foregroundColor(.green)
+                            .cornerRadius(10)
+                    }
+                    .padding(.bottom, 10)
+                    .sheet(isPresented: $showTreeForm) {
+                        AddTreeFormView(isPresented: $showTreeForm)
+                    }
+                }
             } else {
                 ZStack {
                     Circle()
@@ -166,26 +204,8 @@ struct TreeView: View {
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 20)
                     .padding(.bottom, 30)
-            }
-            
-            Spacer()
-            
-            if goals.count >= 6 {
-                Button(action: {
-                    showMaxAlert.toggle()
-                }) {
-                    Text("Add Tree")
-                        .font(.headline)
-                        .padding()
-                        .foregroundColor(.green)
-                        .cornerRadius(10)
-                        .shadow(radius: 3)
-                }
-                .padding(.bottom, 20)
-                .alert(isPresented: $showMaxAlert) {
-                    Alert(title: Text("Uh oh!"), message: Text("You're out of trees. Delete one to be able to add another."), dismissButton: .default(Text("OK")))
-                }
-            } else {
+                
+                // Move the "Add Tree" button here
                 Button(action: {
                     showTreeForm.toggle()
                 }) {
@@ -194,13 +214,14 @@ struct TreeView: View {
                         .padding()
                         .foregroundColor(.green)
                         .cornerRadius(10)
-                        .shadow(radius: 3)
                 }
                 .padding(.bottom, 20)
                 .sheet(isPresented: $showTreeForm) {
                     AddTreeFormView(isPresented: $showTreeForm)
                 }
             }
+            
+            Spacer()
         }
         .padding(.top, 20)
         .frame(maxWidth: .infinity, maxHeight: .infinity)
@@ -211,6 +232,25 @@ struct TreeView: View {
                 }
             }, secondaryButton: .cancel())
         }
+        .overlay(
+            VStack {
+                Spacer()
+                HStack {
+                    Spacer()
+                    Button(action: shareAction) {
+                        Image(systemName: "square.and.arrow.up")
+                            .font(.system(size: 24))
+                            .foregroundColor(.blue)
+                            .padding()
+                            .background(Color.gray.opacity(0.2))
+                            .clipShape(Circle())
+                    }
+                    .padding(.trailing)
+                    .padding(.bottom, 30)
+                    .padding(.trailing, 20)
+                }
+            }
+        )
     }
 }
 
@@ -235,4 +275,3 @@ struct TreeView_Previews: PreviewProvider {
             .modelContainer(sharedModelContainer)
     }
 }
-
