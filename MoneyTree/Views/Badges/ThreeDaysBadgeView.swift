@@ -8,38 +8,53 @@
 import SwiftUI
 
 struct ThreeDaysBadgeView: View {
-    //var savedForThreeDays: Bool // Indicates whether the user has saved for three days
-    
     var body: some View {
-        Section {
-            ZStack {
-                RoundedRectangle(cornerRadius: 15)
-                    .fill(Color.yellow.opacity(0.5))
-                    .frame(width: 150, height: 150)
-                    .overlay(
-                        RoundedRectangle(cornerRadius: 15)
-                            .stroke(Color.yellow, lineWidth: 3)
-                    )
-                
-                VStack {
-                    Text("SAVED FOR")
-                        .font(.caption)
-                        .foregroundColor(.black)
-                    Text("3")
-                        .font(.system(size: 60, weight: .bold))
-                        .fontWeight(.bold)
-                        .foregroundColor(.blue)
-                    Text("CONSECUTIVE DAYS")
-                        .font(.caption)
-                        .foregroundColor(.black)
+        ZStack {
+            RoundedRectangle(cornerRadius: 15)
+                .fill(Color.clear)
+                .frame(maxWidth: .infinity, maxHeight: 100)
+                .overlay(
+                    RoundedRectangle(cornerRadius: 15)
+                        .stroke(Color.gray, lineWidth: 1)
+                )
+            
+            HStack {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 15)
+                        .fill(Color.blue.opacity(0.8))
+                        .frame(width: 80, height: 80)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(Color.blue, lineWidth: 3)
+                        )
+                    
+                    Image(systemName: "number")
+                           .resizable()
+                           .aspectRatio(contentMode: .fit)
+                           .frame(width: 40, height: 40)
+                           .foregroundColor(.white)
                 }
+                .padding(5)
+                
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Saved for 3 Days")
+                        .font(.headline)
+                        .bold()
+                        .foregroundColor(.black)
+                    
+                    Text("You saved for three consecutive days!")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                        .multilineTextAlignment(.leading)
+                }
+                Spacer()
             }
-            .padding()
+            .padding(5)
         }
+        .cornerRadius(15)
     }
 }
 
 #Preview {
     ThreeDaysBadgeView()
 }
-

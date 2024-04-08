@@ -10,37 +10,49 @@ import SwiftUI
 struct FirstGrownTreeBadgeView: View {
     var body: some View {
         ZStack {
-            Circle()
-                .fill(Color.yellow.opacity(0.5))
-                .frame(width: 80, height: 80)
+            RoundedRectangle(cornerRadius: 15)
+                .fill(Color.clear)
+                .frame(maxWidth: .infinity, maxHeight: 100)
                 .overlay(
-                    Circle()
-                        .stroke(Color.yellow, lineWidth: 3)
+                    RoundedRectangle(cornerRadius: 15)
+                        .stroke(Color.gray, lineWidth: 1)
                 )
             
-            VStack {
-                Image(systemName: "tree")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 30, height: 30)
-                    .padding(.horizontal)
-                    .padding(.top, 20)
-                    .padding(.bottom, 2)
+            HStack() {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 15)
+                        .fill(Color.yellow.opacity(0.8))
+                        .frame(width: 80, height: 80)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(Color.yellow, lineWidth: 3)
+                        )
+                    
+                    Image(systemName: "tree")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 40, height: 40)
+                        .foregroundColor(.white)
+                }
+                .padding(5)
                 
-                    .foregroundColor(.green)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Grew a Tree")
+                        .font(.headline)
+                        .bold()
+                        .foregroundColor(.black)
+                    
+                    Text("You grew your first tree! Great job!")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                        .multilineTextAlignment(.leading)
+                }
                 
-                Text("Grew a\nTree")
-                    .font(.system(size: 10))
-                    .bold()
-                    .foregroundColor(.black)
-                    .padding(.bottom, 20)
-                    .padding(.horizontal, 15)
-                    .multilineTextAlignment(.center)
-                
+                Spacer()
             }
+            .padding(5)
         }
-        .padding()
-        .background(Color.clear)
+        .cornerRadius(15)
     }
 }
 

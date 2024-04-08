@@ -9,28 +9,35 @@ import SwiftUI
 import SwiftData
 
 struct ContentView: View {
-    @State var viewModel:BadgesViewModel
+    @State var viewModel: BadgesViewModel
+    @State private var selectedTab: Int = 0
     
     var body: some View {
-            TabView {
-                MainView()
-                    .tabItem {
-                        Label("Home", systemImage: "house")
-                    }
-                
-                StatisticView(month: Date.now)
-                    .tabItem {
-                        Label("Statistics", systemImage: "chart.bar.xaxis")
-                    }
-                TreeView()
-                    .tabItem {
-                        Label("Trees", systemImage: "tree")
-                    }
-                BadgesView(viewModel: viewModel)
-                    .tabItem {
-                        Label("Achievements", systemImage: "trophy")
-                    }
-            }
+        TabView(selection: $selectedTab) {
+            MainView()
+                .tabItem {
+                    Label("Home", systemImage: "house")
+                }
+                .tag(0)
+            
+            StatisticView(month: Date.now)
+                .tabItem {
+                    Label("Statistics", systemImage: "chart.bar.xaxis")
+                }
+                .tag(1)
+            
+            TreeView()
+                .tabItem {
+                    Label("Trees", systemImage: "tree")
+                }
+                .tag(2)
+            
+            BadgesView(viewModel: viewModel, selectedTab: $selectedTab)
+                .tabItem {
+                    Label("Achievements", systemImage: "trophy")
+                }
+                .tag(3)
+        }
     }
 }
 

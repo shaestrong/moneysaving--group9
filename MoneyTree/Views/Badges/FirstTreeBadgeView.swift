@@ -10,37 +10,48 @@ import SwiftUI
 struct FirstTreeBadgeView: View {
     var body: some View {
         ZStack {
-            Circle()
-                .fill(Color.yellow.opacity(0.5))
-                .frame(width: 80, height: 80)
+            RoundedRectangle(cornerRadius: 15)
+                .fill(Color.clear)
+                .frame(maxWidth: .infinity, maxHeight: 100)
                 .overlay(
-                    Circle()
-                        .stroke(Color.yellow, lineWidth: 3)
+                    RoundedRectangle(cornerRadius: 15)
+                        .stroke(Color.gray, lineWidth: 1)
                 )
             
-            VStack {
-                Image(systemName: "leaf")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(width: 30, height: 30)
-                    .padding(.horizontal)
-                    .padding(.top)
-                    .padding(.bottom, 2)
+            HStack {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 15)
+                        .fill(Color.green4.opacity(0.85))
+                        .frame(width: 80, height: 80)
+                        .overlay(
+                            RoundedRectangle(cornerRadius: 15)
+                                .stroke(Color.green4, lineWidth: 3)
+                        )
+                    
+                    Image(systemName: "leaf")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 40, height: 40)
+                        .foregroundColor(.white)
+                }
+                .padding(5)
                 
-                    .foregroundColor(.green)
-                
-                Text("Planted a\nTree")
-                    .font(.system(size: 10))
-                    .bold()
-                    .foregroundColor(.black)
-                    .padding(.bottom)
-                    .padding(.horizontal)
-                    .multilineTextAlignment(.center)
-                
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Planted a Tree")
+                        .font(.headline)
+                        .bold()
+                        .foregroundColor(.black)
+                    
+                    Text("You planted your first tree! Keep going!")
+                        .font(.subheadline)
+                        .foregroundColor(.gray)
+                        .multilineTextAlignment(.leading)
+                }
+                Spacer()
             }
+            .padding(5)
         }
-        .padding()
-        .background(Color.clear)
+        .cornerRadius(15)
     }
 }
 

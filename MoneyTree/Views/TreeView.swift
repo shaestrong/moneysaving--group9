@@ -89,7 +89,7 @@ struct TreeView: View {
                 Text("My Money Trees")
                     .font(.title)
                     .fontWeight(.bold)
-                    .padding(.bottom, 20)
+                    .padding(.bottom, 10)
                 
                 LazyVGrid(columns: [GridItem(.flexible()), GridItem(.flexible())], spacing: 20) {
                     ForEach(goals) { goal in
@@ -155,7 +155,8 @@ struct TreeView: View {
                         Text("Add Tree")
                             .font(.headline)
                             .padding()
-                            .foregroundColor(.green)
+                            .foregroundColor(.white)
+                            .background(.green)
                             .cornerRadius(10)
                     }
                     .padding(.bottom, 10)
@@ -169,7 +170,8 @@ struct TreeView: View {
                         Text("Add Tree")
                             .font(.headline)
                             .padding()
-                            .foregroundColor(.green)
+                            .foregroundColor(.white)
+                            .background(.green)
                             .cornerRadius(10)
                     }
                     .padding(.bottom, 10)
@@ -212,7 +214,8 @@ struct TreeView: View {
                     Text("Add Tree")
                         .font(.headline)
                         .padding()
-                        .foregroundColor(.green)
+                        .foregroundColor(.white)
+                        .background(.green)
                         .cornerRadius(10)
                 }
                 .padding(.bottom, 20)
