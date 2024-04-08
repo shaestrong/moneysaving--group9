@@ -70,4 +70,10 @@ final class BadgesViewModel {
             markAchievementAsEarned(name: "First Tree")
         }
     }
+    
+    func resetAchievements() {
+        for index in store.badges.indices {
+            store.badges[index].isEarned = false
+        }
+    }
 }

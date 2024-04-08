@@ -7,6 +7,7 @@
 
 import SwiftUI
 import WebKit
+import SwiftData
 
 struct WebView: UIViewRepresentable {
     // 1
@@ -282,7 +283,11 @@ FILES ARE PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED
 """
     
     @State var isDarkMode = false
-    
+    @State var viewModel: BadgesViewModel = BadgesViewModel()
+    @Environment(\.modelContext) var modelContext
+    @State private var showingResetConfirmation = false
+        
+   
     var body: some View {
         List {
             Section ("Display Mode") {
@@ -315,13 +320,53 @@ FILES ARE PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED
                         }
                 }
             }
+            Button("Reset Data", role: .destructive){
+                showingResetConfirmation = true // 2. Mostrar el ActionSheet
+            }
+            .actionSheet(isPresented: $showingResetConfirmation) {
+                ActionSheet(
+                    title: Text("Uh-oh!"),
+                    message: Text("Are you sure you want to make everything disappear?"),
+                    buttons: [
+                        .destructive(Text("Abracadabra, All Gone! 🎩"), action: resetData),
+                        .cancel(Text("Oops, no! 🙅‍♂️"))
+                    ]
+                )
+            }
+            
         }
         .navigationTitle("Settings")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar(.hidden, for: .tabBar)
     }
+    
+    func resetData(){
+        do {
+            try modelContext.delete(model: Goal.self)
+            try modelContext.delete(model: Entry.self)
+        } catch {
+            print("Failed to clear all data")
+        }
+        viewModel.resetAchievements()
+    }
 }
 
 #Preview {
-    Settings()
+    var sharedModelContainer: ModelContainer = {
+        let schema = Schema([
+            Entry.self,
+            Goal.self
+        ])
+        
+        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
+
+        do {
+            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+        } catch {
+            fatalError("Could not create ModelContainer: \(error)")
+        }
+    }()
+    
+    return Settings()
+        .modelContainer(sharedModelContainer)
 }
