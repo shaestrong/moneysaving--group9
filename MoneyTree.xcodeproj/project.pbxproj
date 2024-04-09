@@ -391,6 +391,8 @@
 				Base,
 				"es-419",
 				es,
+				"zh-Hans",
+				"zh-Hant",
 			);
 			mainGroup = 48E549382B6059BB008184BA;
 			packageReferences = (
