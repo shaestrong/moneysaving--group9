@@ -27,16 +27,16 @@ struct GoalDetailView: View {
         return String(format: "%.2f", goal.current)
     }
     
-    private func getMotivationString() -> String {
+    private func getMotivationString() -> LocalizedStringKey {
         switch true {
         case goal.progress < 0.4:
-            return "You can do it!"
+            return LocalizedStringKey("You can do it!")
         case goal.progress < 0.7:
-            return "You are doing great!"
+            return LocalizedStringKey("You are doing great!")
         case goal.progress < 1:
-            return "Almost there"
+            return LocalizedStringKey("Almost there")
         default:
-            return "Congratulations!"
+            return LocalizedStringKey("Congratulations!")
         }
     }
     
