@@ -34,7 +34,7 @@ struct GoalPicker: View {
             }
             
             // Remove the association with the goal
-            Button("Remove contribution", role: .destructive) {
+            Button("Remove Contribution", role: .destructive) {
                 showingAlert.toggle()
             }
         }

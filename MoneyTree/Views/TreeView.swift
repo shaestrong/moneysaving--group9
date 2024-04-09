@@ -104,7 +104,7 @@ struct TreeView: View {
                                     ZStack() {
                                         RoundedRectangle(cornerRadius: 20)
                                             .fill(Color.yellow)
-                                            .frame(width: 90, height: 25)
+                                            .frame(width: 105, height: 25)
                                         
                                         Text("1.5x Growth")
                                             .font(.caption)
@@ -112,7 +112,7 @@ struct TreeView: View {
                                             .padding(.horizontal, 8)
                                             .bold()
                                     }
-                                    .offset(x: -20, y: -30)
+                                    .offset(x: -15, y: -30)
                                 }
                                 
                                 Button(action: {

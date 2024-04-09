@@ -22,8 +22,6 @@ struct MainView: View {
     @State private var showingGoalSheet = false
     @State private var showingAlert = false
     @State private var deleteEntry: Entry?
-    @State private var didAddFirstGoal = false // Track if the user added a goal for the first time
-    @State private var didEarnFirstBadge = false // Track if the user earned the first badge
     
     private var cardWidth = UIScreen.main.bounds.size.width / 2 - 24
     
@@ -33,7 +31,7 @@ struct MainView: View {
                 ScrollView(.horizontal, showsIndicators: false) {
                     HStack (spacing: 16) {
                         // Card views for goals
-                        if goals.isEmpty && !didAddFirstGoal {
+                        if goals.isEmpty {
                             VStack (spacing: 8) {
                                 Image(systemName: "dollarsign.circle")
                                     .resizable()
@@ -55,12 +53,6 @@ struct MainView: View {
                                 GoalProgress(goal: goal)
                                     .frame(width: cardWidth, height: 150)
                                     .id("\(Date())")
-                            }
-                            .onAppear {
-                                if !didAddFirstGoal {
-                                    didAddFirstGoal = true
-                                    checkGoalReached() // Check if the badge should be earned when the first goal is added
-                                }
                             }
                         }
                         
@@ -164,16 +156,6 @@ struct MainView: View {
     
     private func addGoal() {
         showingGoalSheet.toggle()
-    }
-    
-    private func checkGoalReached() {
-        // Iterate through goals to check if any goal has been reached
-        for goal in goals {
-            if goal.progress >= 1.0 {
-                didEarnFirstBadge = true
-                break
-            }
-        }
     }
 }
 
